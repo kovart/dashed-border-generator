@@ -1,0 +1,138 @@
+<!--
+* Sup! This tool can be used to generate advanced dashed or dotted border.
+* -
+* The project uses Bootstrap 4 and VueJS v2 frameworks.
+* The "vue-color" component is used to change standard color picker.
+* The "mini-svg-data-uri" library is used to encode SVG to the URI-safe string.
+* -
+* Author: Artem Kovalchuk
+* Email: kovart.dev@gmail.com
+* URL: github.com/kovart
+-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Custom Dashed/Dotted Border – CSS3 Trick Generator</title>
+    <meta name="description"
+          content="Generates custom spacing and stroke length of dashed or dotted border. Based on CSS trick that uses url('data:image/svg') to generate SVG with needed stroke currentStyle.">
+    <meta name="Keywords"
+          content="CSS, border, stroke, dashed, dotted, spacing, generator, svg, distance, trick, hack, online">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="text-center py-4">
+            <h1>Custom Dashed/Dotted Border</h1>
+            <p class="text-center lead">Based on a trick with SVG image inside background-image property</p>
+        </div>
+        <div class="row">
+            <!-- Visualization -->
+            <div class="col-6 ">
+                <div class="visualization block">
+                    <div class="visualization__color-list">
+                        <div class="visualization__color"
+                             @click="openColorPicker('border')"
+                             v-bind:class="{'is-active': colorPicker.target == 'border'}"
+                             v-bind:style="{ background: currentStyle.borderColor }"></div>
+                        <div class="visualization__color"
+                             @click="openColorPicker('background')"
+                             v-bind:class="{'is-active': colorPicker.target == 'background'}"
+                             v-bind:style="{ background: currentStyle.backgroundColor }"
+                        ></div>
+                    </div>
+                    <div v-if="colorPicker.isOpened" class="visualization__color-picker">
+                        <div @click="closeColorPicker" class="filler"></div>
+                        <chrome-picker ref="colorPicker" @input="updateColor" v-model="colorPicker.borderColor" />
+                    </div>
+                    <div v-bind:style="generateCSS(currentStyle)" class="visualization__rectangle"></div>
+                    <div class="visualization__style-list">
+                        <button class="visualization__style"
+                                v-for="style in styles"
+                                @click="setStyle(style)"
+                                v-bind:style="generateCSS(style)">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Settings -->
+            <div class="col-6 pl-0">
+                <div class="block">
+                    <!-- Stoke width -->
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="input-stroke-width">Stroke width: {{ currentStyle.width }}</label>
+                            <input v-model="currentStyle.width" step="1" min="1" max="25" class="custom-range"
+                                   id="input-stroke-width" type="range">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-row ">
+                        <div class="col">
+                            <div class="form-inline"></div>
+                            <div class="form-group">
+                                <label for="input-dash-array">Dash Array</label>
+                                <input type="text" v-model="currentStyle.dashArray" class="form-control"
+                                       id="input-dash-array" aria-describedby="dashArray">
+                                <small class="form-text text-muted">
+                                    It's a sequence of visible/invisible intervals.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Line cap -->
+                    <div class="form-group">
+                        <label for="input-linecap">Line Cap</label>
+                        <select id="input-linecap" class="form-control" v-model="currentStyle.linecap">
+                            <option v-for="option in options.linecap" v-bind:value="option">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Dash offset -->
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="input-stroke-width">Dash offset: {{ currentStyle.dashOffset }}</label>
+                            <input v-model="currentStyle.dashOffset" step="1" min="0" max="100" class="custom-range"
+                                   id="input-dash-offset" type="range">
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- Border radius -->
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="input-border-radius">Border radius: {{ currentStyle.borderRadius }}</label>
+                            <input v-model="currentStyle.borderRadius" step="1" min="0" max="100" class="custom-range"
+                                   id="input-border-radius" type="range">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Generated CSS -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="block">
+                    <textarea ref="codeInput" id="code" class="code mb-3">{{ output }}</textarea>
+                    <button ref="copyBtn" @click="copyCss" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Github corner -->
+<a href="https://github.com/kovart/css-border-generator" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>-->
+<script src="vendor/vue-color.min.js"></script>
+<script src="vendor/mini-svg-data-uri.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
