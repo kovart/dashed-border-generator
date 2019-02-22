@@ -58,7 +58,7 @@ let app = new Vue({
                 backgroundColor: 'transparent',
                 borderColor: 'black',
                 width: 4,
-                dashArray: '20, 20, 800',
+                dashArray: '15, 15, 1',
                 dashOffset: 0,
                 borderRadius: 0,
                 linecap: LineCapStates.Square,
