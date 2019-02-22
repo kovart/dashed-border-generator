@@ -1,10 +1,11 @@
 # Dashed Border Generator
-A simple online tool for creating an advanced dashed or dotted borders. 🚀
+A simple online tool for creating custom dashed or dotted borders.
+It generates a small CSS that can be applied to any DOM elements.
 
-The tool uses a trick with SVG image inside background-image property, 
-and unlike the `border-style: dashed;` property, 
-can change distance between dashed or dotted lines, 
-set custom pattern, add dash offset or change a line cap.
+The tool uses a trick with SVG image inside "background-image" property, 
+and unlike the `border-style: dashed` property, 
+can change distance between dashed lines, 
+set custom pattern, add dash offset or even change a line cap.
 
 ## [View in Action](http://kovart.github.io/dashed-border-generator/)
 ![intro](./intro.png)

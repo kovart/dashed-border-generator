@@ -94,20 +94,20 @@ let app = new Vue({
         },
         generateCSS(style){
             let css = { }
-            if(style.backgroundColor !== 'transparent' && !/^#[a-fA-f0-9]{6}00$/.test(style.backgroundColor)){
+            if(/^#[a-fA-f0-9]{6}FF$/.test(style.backgroundColor)) {
+                css['background-color'] = style.backgroundColor.substr(0, 7)
+            } else if(style.backgroundColor !== 'transparent' && !/^#[a-fA-f0-9]{6}00$/.test(style.backgroundColor)){
                 css['background-color'] = style.backgroundColor
             }
             let svg = `<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'>` +
                 `<rect width='100%' height='100%' fill='none' ` +
-                `rx='${style.borderRadius}' ` +
-                `ry='${style.borderRadius}' `+
+                (style.borderRadius > 0 ? `rx='${style.borderRadius}' ry='${style.borderRadius}' ` : '') +
                 `stroke='${style.borderColor}' ` +
                 `stroke-width='${style.width}' ` +
                 `stroke-dasharray='${style.dashArray}' ` +
                 `stroke-dashoffset='${style.dashOffset}' ` +
                 `stroke-linecap='${style.linecap}'/></svg>`
             css['background-image'] = `url("${svgToTinyDataUri(svg)}")`
-            // TODO transparent regex
             if (style.borderRadius > 0) {
                 css['border-radius'] = style.borderRadius + 'px'
             }
@@ -118,7 +118,9 @@ let app = new Vue({
             el.select();
             document.execCommand('copy');
         },
-        /* Color Picker Methods */
+        /* ---------------------
+         * Color Picker Methods
+         * --------------------- */
         openColorPicker(target){
             this.colorPicker.borderColor = target === 'border' ? this.currentStyle.borderColor : this.currentStyle.backgroundColor
             this.colorPicker.target = target
