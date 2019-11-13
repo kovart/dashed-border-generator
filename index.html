@@ -1,8 +1,8 @@
 <!--
-* Sup! This tool can be used to generate advanced dashed or dotted border.
+* Sup! This tool can be used as generator of advanced dashed or dotted border.
 * -
 * The project uses Bootstrap 4 and VueJS v2 frameworks.
-* The "vue-color" component is used to change standard color picker.
+* The "vue-color" component is used to replace standard color picker.
 * The "mini-svg-data-uri" library is used to encode SVG to the URI-safe string.
 * -
 * Author: Artem Kovalchuk
@@ -13,24 +13,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Custom Dashed/Dotted Border – CSS3 Trick Generator</title>
-    <meta name="description"
-          content="Generates custom spacing and stroke length of dashed or dotted border. Based on CSS trick that uses url('data:image/svg') to generate SVG with needed stroke currentStyle.">
-    <meta name="Keywords"
-          content="CSS, border, stroke, dashed, dotted, spacing, generator, svg, distance, trick, hack, online">
+    <title>CSS Trick – Customized Dashed or Dotted Border</title>
+    <meta name="description" content="A simple CSS generator for custom dashed or dotted border. Has ability to increase space between dots, change dash length or distance between strokes. Based on a trick with SVG-image inside 'background-image' property.">
+    <meta name="Keywords" content="CSS, border, stroke, dashed, dotted, spacing, generator, svg, distance, trick, hack, online">
     <meta name="author" content="Artem Kovalchuk">
     <link rel="icon" type="image/ico" href="favicon.ico">
     <!-- Open Graph -->
     <meta property="og:title" content="Dashed Border Generator by @kovart">
-    <meta property="og:description" content="Generates custom spacing and stroke length of dashed or dotted border. It generates a small CSS that can be applied to any DOM elements.">
+    <meta property="og:description" content="With this tool you can simply increase space between dots, change dash length or distance between strokes.">
     <meta property="og:url" content="https://kovart.github.io/dashed-border-generator/">
     <meta property="og:image" content="https://kovart.github.io/dashed-border-generator/intro.png">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-134982632-1"></script>
     <script>
@@ -44,8 +40,10 @@
 <div id="app">
     <div class="container">
         <div class="text-center py-4">
-            <h1>Custom Dashed/Dotted Border</h1>
-            <p class="text-center lead">Based on a trick with SVG image inside 'background-image' property</p>
+            <h1 style="margin-bottom: 1rem">Customize your CSS Border 🚀</h1>
+            <h2 class="text-center lead">
+                With this tool you can simply increase space between dots, change dash length or distance between strokes.
+            </h2>
         </div>
         <div class="row">
             <!-- Visualization -->
@@ -134,9 +132,34 @@
         <div class="row mt-3">
             <div class="col-12">
                 <div class="block">
-                    <textarea ref="codeInput" id="code" class="code mb-3">{{ output }}</textarea>
-                    <button ref="copyBtn" @click="copyCss" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
+                    <textarea readonly ref="codeInput" id="code" class="output mb-3">{{ output }}</textarea>
+                    <button ref="copyBtn" @click="copyCss" data-toggle="tooltip" title="Some tooltip text!" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-5">
+    <div class="container">
+        <div class="row justify-content-md-center my-5">
+            <div class="col-12 col-md-8">
+                <h2>Usage</h2>
+                <p>
+                    Just copy the output and paste it into your CSS code. For example:
+                <pre class="block"><code class="css">.block {
+   width: 100px;
+   height: 100px;
+   /* dashed border */
+   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}</code></pre>
+                </p>
+                <h2 class="pt-3">How it works?</h2>
+                <p>
+                    Native <mark>border-style</mark> property doesn't support changing things we want.
+                    Since that, we use a trick with inline-SVG image inside <mark>background-image</mark> property.
+                    The SVG features give us ability to change distance between dashed lines,
+                    set custom pattern, add dash offset or even change a line cap.
+                    Generated SVG image fills width and height of elements by 100%, so it doesn't matter what size elements have.
+                </p>
             </div>
         </div>
     </div>
@@ -151,5 +174,8 @@
 <script src="vendor/mini-svg-data-uri.js"></script>
 <!-- App -->
 <script src="main.js"></script>
-</body>
+<!-- Code highlight -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/atom-one-light.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script></body>
 </html>

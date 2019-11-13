@@ -2,13 +2,19 @@
     position: relative;
     padding: 1rem;
     border: solid #f7f7f9;
+    /*background: #fafafa;*/
 }
 
-.code {
+.output {
     display: block;
     height: 6.7em;
     width: 100%;
+    /*padding: 0.6rem;*/
     border: 1px solid transparent;
+}
+
+pre {
+    background: #fafafa;
 }
 
 .filler {
@@ -18,6 +24,7 @@
     width: 100%;
     height: 100%;
 }
+
 
 /* Visualization component
    ------------------------- */
@@ -39,6 +46,7 @@
     padding: 1rem;
     width: 100%;
     display: flex;
+    flex-flow: wrap;
     justify-content: center;
 }
 /* Elements */
@@ -55,7 +63,7 @@
 }
 .visualization__style {
     padding: 1rem;
-    margin: 0 10px;
+    margin: 0 10px 1rem;
     background: unset;
     border: none;
 }
