@@ -57,7 +57,7 @@ let app = new Vue({
             style3: {
                 backgroundColor: 'transparent',
                 borderColor: 'black',
-                width: 4,
+                width: 10,
                 dashArray: '15, 15, 1',
                 dashOffset: 0,
                 borderRadius: 0,
