@@ -133,7 +133,7 @@
             <div class="col-12">
                 <div class="block">
                     <textarea readonly ref="codeInput" id="code" class="output mb-3">{{ output }}</textarea>
-                    <button ref="copyBtn" @click="copyCss" data-toggle="tooltip" title="Some tooltip text!" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
+                    <button ref="copyBtn" @click="copyCss" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
                 </div>
             </div>
         </div>
@@ -154,11 +154,10 @@
                 </p>
                 <h2 class="pt-3">How it works?</h2>
                 <p>
-                    Native <mark>border-style</mark> property doesn't support changing things we want.
-                    Since that, we use a trick with inline-SVG image inside <mark>background-image</mark> property.
-                    The SVG features give us ability to change distance between dashed lines,
-                    set custom pattern, add dash offset or even change a line cap.
-                    Generated SVG image fills width and height of elements by 100%, so it doesn't matter what size elements have.
+                    Native CSS properties <b>don't support</b> customization of <mark>border-style</mark>.
+                    Since that, we use a trick with an <b><i>SVG image inside</i></b> <mark>background-image</mark> property.
+                    The SVG features give us the ability to change the distance between dashed lines, set custom pattern, add dash offset or even change a line cap.
+                    Generated SVG image is vector and it fills width and height of elements by 100%, so it doesn't matter what size elements have.
                 </p>
             </div>
         </div>

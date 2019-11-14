@@ -1,3 +1,12 @@
+p {
+    font-size: 1.1rem;
+}
+
+mark {
+    color: #e83e8c;
+    word-break: break-word;
+}
+
 .block {
     position: relative;
     padding: 1rem;
