@@ -1,7 +1,7 @@
 # Dashed Border Generator
 A simple online tool for creating custom dashed or dotted borders. Using CSS hack, this tool can simply increase space between dots, change dash length or distance between strokes.
 
-## How it works? 🚀
+## How does it work? 🚀
 Native CSS properties **don't support** the customization of `border-style`. 
 Therefore, we use a trick with an ***SVG image inside*** `background-image` property. 
 The SVG features give us the ability to change the distance between dashed lines, set custom pattern, add dash offset or even change a line cap. 
