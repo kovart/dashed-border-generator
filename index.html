@@ -47,7 +47,7 @@
         </div>
         <div class="row">
             <!-- Visualization -->
-            <div class="col-6 ">
+            <div class="col-md-6">
                 <div class="visualization block">
                     <div class="visualization__color-list">
                         <div class="visualization__color"
@@ -64,20 +64,40 @@
                         <div @click="closeColorPicker" class="filler"></div>
                         <chrome-picker ref="colorPicker" @input="updateColor" v-model="colorPicker.borderColor" />
                     </div>
-                    <div v-bind:style="generateCSS(currentStyle)" class="visualization__rectangle"></div>
+                    <div v-bind:style="blockStyle" class="visualization__rectangle"></div>
                     <div class="visualization__style-list">
                         <button class="visualization__style"
                                 v-for="style in styles"
                                 @click="setStyle(style)"
-                                v-bind:style="generateCSS(style)">
+                                v-bind:style="generateBorderStyle(style)">
                         </button>
                     </div>
                 </div>
             </div>
             <!-- Settings -->
-            <div class="col-6 pl-0">
+            <div class="col-md-6">
                 <div class="block">
-                    <!-- Stoke width -->
+                    <!-- Block size -->
+                    <div class="form-row">
+                        <div class="col-6">
+                            <label for="input-block-width">Width:</label>
+                            <input v-model="block.width" class="form-control" type="text" id="input-block-width">
+                        </div>
+                        <div class="col-6">
+                            <label for="input-block-height">Height:</label>
+                            <input v-model="block.height" class="form-control" type="text" id="input-block-height">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+
+                            <small class="form-text text-muted">
+                                Note: It doesn't impact on generated style.
+                            </small>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- Stroke width -->
                     <div class="form-row">
                         <div class="col-12">
                             <label for="input-stroke-width">Stroke width: {{ currentStyle.width }}</label>
@@ -85,28 +105,33 @@
                                    id="input-stroke-width" type="range">
                         </div>
                     </div>
-                    <hr>
                     <div class="form-row ">
-                        <div class="col">
+                        <!-- Dash Array -->
+                        <div class="col-6">
                             <div class="form-inline"></div>
                             <div class="form-group">
                                 <label for="input-dash-array">Dash Array</label>
-                                <input type="text" v-model="currentStyle.dashArray" class="form-control"
-                                       id="input-dash-array" aria-describedby="dashArray">
+                                <div class="input-group">
+                                    <input type="text" v-model="currentStyle.dashArray" class="form-control"
+                                           id="input-dash-array" aria-describedby="dashArray">
+                                    <div class="input-group-append">
+                                        <button @click="generateRandomDashArray()" class="btn btn-outline-secondary" type="button">Random</button>
+                                    </div>
+                                </div>
                                 <small class="form-text text-muted">
                                     It's a sequence of visible/invisible intervals.
                                 </small>
                             </div>
                         </div>
-                    </div>
-                    <!-- Line cap -->
-                    <div class="form-group">
-                        <label for="input-linecap">Line Cap</label>
-                        <select id="input-linecap" class="form-control" v-model="currentStyle.linecap">
-                            <option v-for="option in options.linecap" v-bind:value="option">
-                                {{ option }}
-                            </option>
-                        </select>
+                        <!-- Line cap -->
+                        <div class="col-6">
+                            <label for="input-linecap">Line Cap</label>
+                            <select id="input-linecap" class="form-control" v-model="currentStyle.linecap">
+                                <option v-for="option in options.linecap" v-bind:value="option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <!-- Dash offset -->
                     <div class="form-row">
@@ -128,7 +153,7 @@
                 </div>
             </div>
         </div>
-        <!-- Generated CSS -->
+        <!-- Generated Style -->
         <div class="row mt-3">
             <div class="col-12">
                 <div class="block">

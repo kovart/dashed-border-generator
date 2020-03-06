@@ -37,7 +37,7 @@ pre {
 
 /* Visualization component
    ------------------------- */
-.visualization { width: 100%; height: 100%; }
+.visualization { height: 100%; }
 /* Layout */
 .visualization__color-list {
     text-align: left;
@@ -75,11 +75,4 @@ pre {
     margin: 0 10px 1rem;
     background: unset;
     border: none;
-}
-/* Queries */
-@media (max-width: 992px) {
-    .visualization__rectangle {
-        width: 150px;
-        height: 150px;
-    }
 }

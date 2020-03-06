@@ -17,6 +17,10 @@ let app = new Vue({
             borderColor: '#194d33',
             target: ''
         },
+        block: {
+            width: 200,
+            height: 200
+        },
         currentStyle: {
             backgroundColor: 'transparent',
             borderColor: '#333',
@@ -80,23 +84,26 @@ let app = new Vue({
     computed: {
         output() {
             let str = ''
-            let css = this.generateCSS(this.currentStyle)
-            for(let key in css){
-                if(!css.hasOwnProperty(key)) continue
+            const css = this.generateBorderStyle(this.currentStyle)
+            for (let key in css) {
+                if (!css.hasOwnProperty(key)) continue
                 str += `${key}: ${css[key]};\n`
             }
-            return str.substr(0, str.length-1) // remove last line break
+            return str.substr(0, str.length - 1) // remove last line break
         },
+        blockStyle() {
+            return Object.assign(this.generateBlockStyle(), this.generateBorderStyle(this.currentStyle))
+        }
     },
     methods: {
         setStyle(style) {
             this.currentStyle = {...style}
         },
-        generateCSS(style){
-            let css = { }
-            if(/^#[a-fA-f0-9]{6}FF$/.test(style.backgroundColor)) {
+        generateBorderStyle(style) {
+            const css = {}
+            if (/^#[a-fA-f0-9]{6}FF$/.test(style.backgroundColor)) {
                 css['background-color'] = style.backgroundColor.substr(0, 7)
-            } else if(style.backgroundColor !== 'transparent' && !/^#[a-fA-f0-9]{6}00$/.test(style.backgroundColor)){
+            } else if (style.backgroundColor !== 'transparent' && !/^#[a-fA-f0-9]{6}00$/.test(style.backgroundColor)) {
                 css['background-color'] = style.backgroundColor
             }
             let svg = `<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'>` +
@@ -111,7 +118,22 @@ let app = new Vue({
             if (style.borderRadius > 0) {
                 css['border-radius'] = style.borderRadius + 'px'
             }
+
             return css
+        },
+        generateBlockStyle() {
+            return {width: parseInt(this.block.width) + 'px', height: parseInt(this.block.height) + 'px'}
+        },
+        generateRandomDashArray() {
+            function getRandom(min, max) {
+                return Math.floor(Math.random() * (max - min) + min)
+            }
+
+            const minSide = Math.min(parseInt(this.block.width), parseInt(this.block.height))
+            const sequences = [...Array(getRandom(1, 5))]
+            // I don't why but it doesnt work with .map()...
+            sequences.forEach((_, i) => sequences[i] = getRandom(minSide / 34, minSide / 8))
+            this.currentStyle.dashArray = sequences.join(', ')
         },
         copyCss() {
             const el = this.$refs.codeInput;
@@ -121,17 +143,17 @@ let app = new Vue({
         /* ---------------------
          * Color Picker Methods
          * --------------------- */
-        openColorPicker(target){
+        openColorPicker(target) {
             this.colorPicker.borderColor = target === 'border' ? this.currentStyle.borderColor : this.currentStyle.backgroundColor
             this.colorPicker.target = target
             this.colorPicker.isOpened = true
         },
-        closeColorPicker(){
+        closeColorPicker() {
             this.colorPicker.isOpened = false
             this.colorPicker.target = ''
         },
-        updateColor(color){
-            if(this.colorPicker.target === 'border') {
+        updateColor(color) {
+            if (this.colorPicker.target === 'border') {
                 this.currentStyle.borderColor = color.hex8
             } else {
                 this.currentStyle.backgroundColor = color.hex8
