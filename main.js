@@ -41,7 +41,7 @@ let app = new Vue({
                 linecap: LineCapStates.Square,
             },
             style1: {
-                backgroundColor: 'white',
+                backgroundColor: 'transparent',
                 borderColor: '#EC3463',
                 width: 7,
                 dashArray: '50%, 13%',
@@ -50,12 +50,12 @@ let app = new Vue({
                 linecap: LineCapStates.Butt,
             },
             style2: {
-                backgroundColor: 'pink',
-                borderColor: 'white',
-                width: 15,
-                dashArray: '6%',
+                backgroundColor: 'transparent',
+                borderColor: 'black',
+                width: 4,
+                dashArray: '2, 8',
                 dashOffset: 0,
-                borderRadius: 100,
+                borderRadius: 0,
                 linecap: LineCapStates.Butt,
             },
             style3: {
