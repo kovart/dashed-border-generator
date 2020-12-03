@@ -158,7 +158,9 @@
             <div class="col-12">
                 <div class="block">
                     <textarea readonly ref="codeInput" id="code" class="output mb-3">{{ output }}</textarea>
-                    <button ref="copyBtn" @click="copyCss" class="btn btn-outline-primary px-5 mx-auto">Copy</button>
+                    <button ref="copyBtn" @click="copyCss" class="btn btn-outline-primary px-5 mx-auto">
+                        {{ isCopied ? 'Copied' : 'Copy' }}
+                    </button>
                 </div>
             </div>
         </div>

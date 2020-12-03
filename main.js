@@ -80,6 +80,8 @@ let app = new Vue({
         options: {
             linecap: LineCapStates
         },
+        // used to change "isCopied" state after a few seconds
+        copyTimeout: null
     },
     computed: {
         output() {
@@ -93,11 +95,14 @@ let app = new Vue({
         },
         blockStyle() {
             return Object.assign(this.generateBlockStyle(), this.generateBorderStyle(this.currentStyle))
+        },
+        isCopied() {
+            return !!this.copyTimeout
         }
     },
     methods: {
         setStyle(style) {
-            this.currentStyle = {...style}
+            this.currentStyle = { ...style }
         },
         generateBorderStyle(style) {
             const css = {}
@@ -136,9 +141,13 @@ let app = new Vue({
             this.currentStyle.dashArray = sequences.join(', ')
         },
         copyCss() {
-            const el = this.$refs.codeInput;
-            el.select();
-            document.execCommand('copy');
+            const el = this.$refs.codeInput
+            el.select()
+            document.execCommand('copy')
+            clearTimeout(this.copyTimeout);
+            this.copyTimeout = setTimeout(() => {
+                this.copyTimeout = null
+            }, 3500)
         },
         /* ---------------------
          * Color Picker Methods
