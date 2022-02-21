@@ -100,9 +100,8 @@
                     <!-- Stroke width -->
                     <div class="form-row">
                         <div class="col-12">
-                            <label for="input-stroke-width">Stroke width: {{ currentStyle.width }}</label>
-                            <input v-model="currentStyle.width" step="1" min="1" max="25" class="custom-range"
-                                   id="input-stroke-width" type="range">
+                            <label for="input-stroke-width">Stroke width:</label>
+                            <input v-model="currentStyle.width" class="form-control" type="text" id="input-stroke-width">
                         </div>
                     </div>
                     <div class="form-row ">
@@ -145,9 +144,8 @@
                     <!-- Border radius -->
                     <div class="form-row">
                         <div class="col-12">
-                            <label for="input-border-radius">Border radius: {{ currentStyle.borderRadius }}</label>
-                            <input v-model="currentStyle.borderRadius" step="1" min="0" max="100" class="custom-range"
-                                   id="input-border-radius" type="range">
+                            <label for="input-border-radius">Border radius:</label>
+                            <input v-model="currentStyle.borderRadius" class="form-control" type="text" id="input-border-radius">
                         </div>
                     </div>
                 </div>
